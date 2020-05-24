@@ -5,7 +5,7 @@
 from setuptools import setup, find_packages
 
 
-with open("README.ad") as f:
+with open("README.md") as f:
     readme = f.read()
 
 with open("LICENSE") as f:
@@ -13,12 +13,12 @@ with open("LICENSE") as f:
 
 setup(
     name="happydevelopperfr_flyplanner",
-    version="0.0.2",
+    version="0.0.3",
     description="fly planner for happy.developper.fr",
     long_description=readme,
     author="COTTET Julien",
     author_email="happy.developper.fr@gmail.com",
     url="https://github.com/happy-developer-fr/fly-planner",
     license=license,
-    packages=["flyplanner"],
+    packages=find_packages(exclude=("tests", "docs")),
 )
