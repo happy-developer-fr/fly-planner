@@ -15,3 +15,4 @@ steps:
         from_secret: PYPI_LOGIN
       password:
         from_secret: PYPI_PASSWORD
+      setupfile: setup.py
