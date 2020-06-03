@@ -1,6 +1,8 @@
 import random
 from typing import List
 
+from flyplanner import logger
+
 
 class Fly:
     def __init__(self, initial_energy: float):
@@ -27,6 +29,7 @@ class Fly:
         return energy_consumed
 
     def die(self):
+        logger.log_fly_died()
         self.alive = False
 
     def creation_energy_price(self) -> float:
@@ -55,6 +58,7 @@ class Colony:
                 0.0, self.energy_remaining - new_fly.creation_energy_price()
             )
             self.born += 1
+            logger.log_fly_is_born()
 
     def feed_flies(self) -> None:
         for fly in self.flies:
@@ -64,9 +68,11 @@ class Colony:
 
     def leave(self) -> List[Fly]:
         flies_left = [
-            self.flies.pop() for i in range(min(len(self.flies), random.randint(0, 5)))
+            self.flies.pop()
+            for i in range(min(len(self.flies), random.randint(0, 5)))
         ]
         self.left += len(flies_left)
+        logger.log_fly_left(len(flies_left))
         return flies_left
 
     def is_active(self) -> bool:
@@ -88,3 +94,16 @@ class Colony:
                 self.create_fly()
             self.died += len(self.dead_flies())
             self.flies = self.flies_alive()
+
+
+class Colonnies:
+    def __init__(self, colonies: List[Colony]):
+        self.colonies = colonies
+
+    def new_day(self):
+        self.colonies = [colony.new_day() for colony in self.colonies]
+
+    def pop_new_colony(self):
+        self.colonies.append(
+            Colony(flies=[], food_initial_energy=random.randint(100, 3000))
+        )
